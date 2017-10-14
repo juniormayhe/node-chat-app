@@ -6,6 +6,6 @@ const port = process.env.PORT || 3000;
 
 var app= express();
 app.use(express.static(publicPath));
-app.listen(3000, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log(`server is app at ${port}`);
 });
