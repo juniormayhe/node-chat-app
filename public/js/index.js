@@ -2,11 +2,6 @@ var socket = io();
 socket.on('connect', function(){
     console.log('Client is connected to server');
 
-    socket.emit('createMessage', {
-        from: 'junior@email.com',
-        to: 'target@example.com',
-        text: 'message from client'
-    });
 
 });
 

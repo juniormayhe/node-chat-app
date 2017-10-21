@@ -13,16 +13,15 @@ var server  = app.listen(port, ()=>{
 var io = require('socket.io').listen(server);
 io.on('connection', (socket)=> {
     console.log('.. new user connected');
-    
-    //a new message has arrived and emit it to client
-    socket.emit('newMessage', {
-        from: 'julia@example.com',
-        text: 'hello',
-        createdAt: 123
-    });
 
-    socket.on('createMessage', (newMessage)=> {
-        console.log('client created message ', newMessage);
+    socket.on('createMessage', (message)=> {
+        console.log('client created message ', message);
+        //emit event to every single connection
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        });
     });
     
     
