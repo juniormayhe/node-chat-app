@@ -14,14 +14,35 @@ var io = require('socket.io').listen(server);
 io.on('connection', (socket)=> {
     console.log('.. new user connected');
 
+    //socket emit to the user who joined
+    socket.emit('newMessage', {
+        from: 'Admin',
+        message: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
+    });
+    //tells everybody a new user joined chat app, but the current user 
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        message: `A new user joined chat room`,
+        createdAt: new Date().getTime()
+    });
+
     socket.on('createMessage', (message)=> {
         console.log('client created message ', message);
+        
+
         //emit event to every single connection
         io.emit('newMessage', {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime()
         });
+        //broadcast message to everyone but myself
+        // socket.broadcast.emit('newMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // })
     });
     
     
