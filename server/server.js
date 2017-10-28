@@ -23,7 +23,8 @@ io.on('connection', (socket)=> {
         generateMessage('Admin', 'A new user joined chat room')
     );
 
-    socket.on('createMessage', (message)=> {
+    //event listener
+    socket.on('createMessage', (message, callback)=> {
         console.log('client created message ', message);
         
 
@@ -31,6 +32,9 @@ io.on('connection', (socket)=> {
         io.emit('newMessage', 
             generateMessage(message.from,message.text)
         );
+        //call method from client
+        callback({ackMessage:'this is an ack from server'});
+
         //broadcast message to everyone but myself
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,
