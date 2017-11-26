@@ -17,6 +17,19 @@ socket.on('newMessage', function(message){
     jQuery('#messages').append(li);
 });
 
+//listen newLocationMessage from server
+socket.on('newLocationMessage', function(message){
+    
+    var li=jQuery('<li></li>');
+    var a = jQuery('<a target="_blank">My current location</a>');
+    
+    li.text(`${message.from}:`);
+    a.attr('href', message.url);
+    li.append(a);
+    jQuery('#messages').append(li);
+});
+
+
 //event emitter and callback for acknowledgment
 // socket.emit('createMessage', {
 //     from: 'Frank',
@@ -33,4 +46,22 @@ jQuery('#message-form').on('submit', function(e){
     }, function(data){
         console.log('client got ack from server:', data.ackMessage);
     });
+});
+
+//deal with geolocation
+var locationButton = jQuery('#send-location');
+locationButton.on('click', ()=>{
+    if (!navigator.geolocation){
+        alert('Geolocation not supported by your browser');
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position)=>{ 
+            socket.emit('createLocationMessage', {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            })
+        },
+         ()=>{ alert('Unable to get your location.');});
 });
