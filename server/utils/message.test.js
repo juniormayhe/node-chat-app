@@ -25,11 +25,13 @@ describe('generateLocationMessage', ()=> {
         var from = 'Junior';
         var latitude= 1;
         var longitude= 2;
+        var url =`https://www.google.com/maps?q=${latitude},${longitude}`;
         var message = generateLocationMessage(from, latitude, longitude);
         
         //assert url
-        expect(message.url).toBe(`https://www.google.com/maps?q=${latitude},${longitude}`);
-        
+        expect(message.url).toBe(url);//assert only url string
+        expect(message).toMatchObject({from, url});//assert whole object
+
         //assert createdAt
         expect(typeof(message.createdAt)).toBe('number');
     });
