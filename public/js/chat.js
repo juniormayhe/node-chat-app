@@ -18,7 +18,17 @@ function scrollToBottom(){
 }
 socket.on('connect', function(){
     console.log('Client is connected to server');
-
+    var params = jQuery.deparam(window.location.search);
+    //join a room
+    socket.emit('join', params, function(err){
+        if (err){
+            alert(err);
+            window.location.href = '/';
+        }
+        else{
+            console.log('no error');
+        }
+    });
 
 });
 
